@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<input id="userInput" value="hi">
+<button onclick="send()">Send</button>
+
+<p id="reply"></p>
+
+<script>
+function send() {
+  const userMessage = document.getElementById("userInput").value;
+  
+  fetch("http://127.0.0.1:5000/chat", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ message: userMessage })
+  })
+  .then(r => r.json())
+  .then(d => {
+    document.getElementById("reply").innerText = d.response;
+  })
+  .catch(e => console.log("Error:", e));
+}
+</script>
+
+</body>
+</html>
