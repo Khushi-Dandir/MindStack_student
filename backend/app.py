@@ -4,7 +4,7 @@ import random
 from knowledge import INTENTS
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["https://mindstack-student-frontend.onrender.com"])
 
 @app.route("/")
 def home():
