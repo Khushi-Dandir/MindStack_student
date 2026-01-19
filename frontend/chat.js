@@ -24,7 +24,7 @@ function sendMessage() {
   fetch("https://mindstack-student-backend.onrender.com/chat", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ message })
+  body: JSON.stringify({ message : message })
 })
 
     .then(response => response.json())
