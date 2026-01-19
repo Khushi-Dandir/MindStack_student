@@ -1,4 +1,4 @@
-# MINDSTACK_student 🌿
+# MINDSTACK_student 
 
 A mental wellness support platform designed for students. Provides a **safe, private, and calming space** to express emotions and receive immediate support.
 
