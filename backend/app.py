@@ -1,11 +1,11 @@
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import random
-from backend.knowledge import INTENTS
+from knowledge import INTENTS
 import os
 
 app = Flask(__name__, static_folder='../frontend')
-CORS(app)  # testing ke liye
+CORS(app)  # for testing 
 
 # Serve frontend
 @app.route("/chat", methods=["POST"])
