@@ -1,43 +1,31 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import random
 from knowledge import INTENTS
+import os
 
-app = Flask(__name__)
-CORS(app)  # temporarily allow all origins for testing
+app = Flask(__name__, static_folder='../frontend')
+CORS(app)  # testing ke liye
 
+# Serve frontend
 @app.route("/")
-def home():
-    return "Backend running OK"
+def index():
+    return send_from_directory(app.static_folder, "index.html")
 
-def get_response(user_message):
-    try:
-        user_message = user_message.lower().strip()
-        for intent in INTENTS.values():
-            for keyword in intent["keywords"]:
-                if keyword in user_message:
-                    return random.choice(intent["responses"])
-    except Exception as e:
-        print("Error in get_response:", e)
-
-    # default supportive response
-    return random.choice([
-        "I'm here for you 💙 You can tell me more about how you're feeling.",
-        "It's okay if you can't explain it clearly. Take your time 🌱",
-        "I may not fully understand yet, but I’m listening 🤍",
-        "That sounds difficult. Do you want to talk more about it?"
-    ])
-
+# Chat API
 @app.route("/chat", methods=["POST"])
 def chat():
     try:
         data = request.get_json(force=True)
         user_message = data.get("message", "")
-        reply = get_response(user_message)
-        return jsonify({"response": reply})
+        for intent in INTENTS.values():
+            for keyword in intent["keywords"]:
+                if keyword in user_message.lower():
+                    return jsonify({"response": random.choice(intent["responses"])})
+        return jsonify({"response": "I'm listening 💙"})
     except Exception as e:
-        print("Error in /chat:", e)
-        return jsonify({"response": "Sorry, something went wrong 😔"}), 500
+        print("Error:", e)
+        return jsonify({"response": "Something went wrong 😔"}), 500
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))

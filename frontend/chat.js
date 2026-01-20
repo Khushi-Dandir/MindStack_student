@@ -21,13 +21,12 @@ function sendMessage() {
   // Show typing indicator
   addMessage("Typing...", "bot", true);
 
-  fetch("https://mindstack-student-backend.onrender.com/chat", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ message: message })
-  })
+  fetch("/chat", {   // relative URL
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ message: userMessage })
+})
+
     .then(response => {
       if (!response.ok) {
         throw new Error("Server error");
