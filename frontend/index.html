@@ -1,30 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MindStack Chat</title>
+</head>
+
 <body>
 
-<input id="userInput" placeholder="Type here">
-<button onclick="send()">Send</button>
+  <input id="userInput" placeholder="Type here">
+  <button onclick="send()">Send</button>
 
-<p id="reply"></p>
+  <p id="reply"></p>
 
-<script>
-function send() {
-  const userMessage = document.getElementById("userInput").value;
+  <script>
+    function send() {
+      const userMessage = document.getElementById("userInput").value;
 
-  fetch("https://mindstack-student-backend.onrender.com/chat", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ message: userMessage })
-  })
-  .then(r => r.json())
-  .then(d => {
-    document.getElementById("reply").innerText = d.response;
-  })
-  .catch(e => console.log("Error:", e));
-}
-</script>
+      fetch("https://mindstack-student-backend.onrender.com/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message: userMessage })
+      })
+      .then(r => r.json())
+      .then(d => {
+        document.getElementById("reply").innerText = d.response;
+      })
+      .catch(e => console.log("Error:", e));
+    }
+  </script>
 
 </body>
 </html>
