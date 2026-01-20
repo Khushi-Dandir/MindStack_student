@@ -2,7 +2,11 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, origins=["https://mindstack-student-frontend.onrender.com"])
+ CORS(app, origins=[
+    "https://mindstack-student-frontend.onrender.com",
+    "https://mindstack-student-o1bx.onrender.com"
+])
+
 
 @app.route("/")
 def home():
