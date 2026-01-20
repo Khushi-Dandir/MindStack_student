@@ -4,17 +4,31 @@ import random
 from knowledge import INTENTS
 import os
 
-app = Flask(__name__, static_folder='../frontend')
+# Use an absolute path for the frontend folder so Flask can always find files
+FRONTEND_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'frontend'))
+app = Flask(__name__, static_folder=FRONTEND_PATH)
 CORS(app)  # for testing 
 
-# Serve frontend
+
+@app.route("/")
+def index():
+    return send_from_directory(app.static_folder, "index.html")
+
+
+# Serve frontend static assets (css/js)
+@app.route('/<path:filename>')
+def serve_static(filename):
+    return send_from_directory(app.static_folder, filename)
+
+
+# Chat endpoint
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.get_json()
 
     if not data or "message" not in data:
         return jsonify({"response": "Please type something 🙂"})
-
+ 
     user_message = data["message"]
     reply = get_responses(user_message)
 
