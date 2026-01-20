@@ -3,6 +3,7 @@ const userInput = document.getElementById("userInput");
 const chatBox = document.getElementById("chatBox");
 
 sendBtn.addEventListener("click", sendMessage);
+
 userInput.addEventListener("keypress", function (e) {
   if (e.key === "Enter") {
     sendMessage();
@@ -15,27 +16,31 @@ function sendMessage() {
 
   // Show user message
   addMessage(message, "user");
-
   userInput.value = "";
 
-  // Show typing
+  // Show typing indicator
   addMessage("Typing...", "bot", true);
 
-  fetch("http://127.0.0.1:5000/", {
+  fetch("https://mindstack-student-backend.onrender.com/chat", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({ message: message })
   })
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Server error");
+      }
+      return response.json();
+    })
     .then(data => {
       removeTyping();
       addMessage(data.response, "bot");
     })
     .catch(error => {
       removeTyping();
-      addMessage("Something went wrong 😔", "bot");
+      addMessage("Server se reply nahi aa raha 😔", "bot");
       console.error(error);
     });
 }
